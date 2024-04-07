@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "419797598103",
+    "project_id": "milcko-a5c94",
+    "storage_bucket": "milcko-a5c94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:419797598103:android:93861b161121e7bc13ced2",
+        "android_client_info": {
+          "package_name": "com.example.milcko"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsg7GCA9mmb48h4d7qir-JtK9-304Po4k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
