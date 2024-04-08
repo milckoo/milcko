@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:milcko/widgets/constants.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const String id = 'home-screen';
+  static String id = 'home-screen';
   const HomeScreen({key});
 
   @override

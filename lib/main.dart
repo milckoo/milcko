@@ -1,11 +1,13 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:milcko/screens/home_screen.dart';
 import 'package:milcko/Screens/splash_screen.dart';
-import 'package:milcko/screens/getstarted_screen.dart';
 import 'package:milcko/firebase_options.dart';
 import 'package:milcko/provider/auth_provider.dart';
 import 'package:milcko/provider/location_provider.dart';
+import 'package:milcko/screens/getstarted_screen.dart';
+import 'package:milcko/screens/home_screen.dart';
+import 'package:milcko/screens/map_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async{
@@ -13,34 +15,23 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
-  // AuthProvider access = new AuthProvider();
-  // access.recreateUsersCollection().then((_) {
-  //   runApp(
-  //     MultiProvider(
-  //       providers: [
-  //         ChangeNotifierProvider(
-  //           //create: (_) => AuthProvider(),
-  //         ),
-  //         ChangeNotifierProvider(
-  //           create: (_) => LocationProvider(),
-  //         )
-  //       ],
-  //       child: const MyApp(),)
-  //   );
-  // });
-  // runApp(
-  //   MultiProvider(
-  //     providers: [
-  //       ChangeNotifierProvider(
-  //         create: (_) => AuthProvider(),
-  //       ),
-  //       ChangeNotifierProvider(
-  //         create: (_) => LocationProvider(),
-  //       )
-  //       ],
-  //       child: const MyApp(),)
-  // );
+  await FirebaseAppCheck.instance.activate(
+    webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
+    androidProvider: AndroidProvider.debug,
+    appleProvider: AppleProvider.appAttest,
+  );
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LocationProvider(),
+        )
+        ],
+        child: const MyApp(),)
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -49,21 +40,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return 
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_)=> AuthProvider())],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        initialRoute: SplashScreen.id,
+        routes: {
+          HomeScreen.id: (context) => const  HomeScreen(),
+          GetStartedScreen.id: (context) => const GetStartedScreen(),
+          SplashScreen.id: (context) => const SplashScreen(),
+          MapScreen.id: (context) => const MapScreen(),
+        }
+      ),
     );
-    // MultiProvider(
-    //   providers: [ChangeNotifierProvider(create: (_)=> AuthProvider())],
-    //   child: const MaterialApp(
-    //     debugShowCheckedModeBanner: false,
-    //     initialRoute: SplashScreen.id,
-    //     routes: {
-    //       HomeScreen.id: (context) => const HomeScreen(),
-    //       GetStartedScreen.id: (context) => const GetStartedScreen(),
-    //       SplashScreen.id: (context) => const SplashScreen(),
-    //     }
-    //   ),
-    // );
   }
 }

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:milcko/models/user_model.dart';
-import 'package:milcko/screens/map_screen.dart';
 import 'package:milcko/screens/otp_screen.dart';
 import 'package:milcko/widgets/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,10 +36,7 @@ class AuthProvider extends ChangeNotifier{
   }
   
   void signInWithPhone(BuildContext context,String phoneNumber) async{
-    print('ENTRED SIGN IN  WITH PHONE METHOD');
-    MapScreenState location = MapScreenState();
     try {
-      print('ENTRED TRY BLOCK');
       await _firebaseAuth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: (PhoneAuthCredential phoneAuthCredential) async{
@@ -61,6 +57,84 @@ class AuthProvider extends ChangeNotifier{
       );
     } on FirebaseAuthException catch(e){
       showSnackbar(context, e.message.toString());
+    }
+  }
+  void verifyOtp({
+    required BuildContext context,
+    required String verificationId,
+    required String userOtp,
+    required Function OnSuccess,
+  }) async {
+
+    _isLoading = true;
+    notifyListeners();
+
+    print('CALLED VERIFY OTP- AUTH SCREEN');
+    try{
+      PhoneAuthCredential creds = PhoneAuthProvider.credential(
+        verificationId: verificationId,smsCode: userOtp);
+      User? user = (await _firebaseAuth.signInWithCredential(creds)).user;
+      if(user != null){
+        // carry logic
+        _uid = user.uid;
+        _isLoading = false;
+        notifyListeners();
+        OnSuccess();
+      }
+      _isLoading = false;
+      notifyListeners();
+    } on FirebaseAuthException catch(e){
+
+      showSnackbar(context, e.message.toString());
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // DATA BASE OPERATION
+  Future<bool> checkExistingUser() async {
+    DocumentSnapshot snapshot = await _firebaseFirestore.collection("users").doc(_uid).get();
+    if(snapshot.exists){
+      print('USER EXISTS');
+      notifyListeners();
+      return true;
+    }
+    else{
+      print('NEW USER');
+      notifyListeners();
+      return false;
+    }
+  }
+
+  void saveUserDataToFirebase({
+    required BuildContext context,
+    required UserModel userModel,
+    required Function OnSuccess,
+  }) async {
+    print('SAVE USER DATA TO FIREBASE');
+    _isLoading = true;
+    notifyListeners();
+    try{
+      userModel.phoneNumber = _firebaseAuth.currentUser!.phoneNumber!;
+      //userModel.location = _firebaseAuth.currentUser!.location!;
+      userModel.uid = _firebaseAuth.currentUser!.uid;
+      _userModel = userModel;
+
+      print(userModel.phoneNumber);
+      //uploading to data base
+      await _firebaseFirestore
+      .collection("users")
+      .doc(userModel.phoneNumber)
+      .set(userModel.toMap())
+      .then((value) => {
+        OnSuccess(),
+        _isLoading = false,
+        notifyListeners(),
+      });
+    } on FirebaseAuthException catch(e){
+      showSnackbar(context, e.message.toString());
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }
