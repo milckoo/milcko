@@ -27,8 +27,8 @@ class MapScreenState extends State<MapScreen> {
       _mapController = controller;
       });
     }
-    return SafeArea(
-      child: Stack(
+    return Scaffold(
+      body: Stack(
         children: [
             GoogleMap(
             initialCameraPosition: CameraPosition(
@@ -64,8 +64,8 @@ class MapScreenState extends State<MapScreen> {
               color: Colors.white,
               child: Column(
                 children: [
-                  // Text(locationData.selectedAddresses.featureName),
-                  // Text(locationData.selectedAddresses.addressLine),
+                  Text(locationData.selectedAddresses?.featureName ?? '',style:const TextStyle(color: Colors.black,fontWeight: FontWeight.bold)),
+                  Text(locationData.selectedAddresses?.addressLine ?? '',style:const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
