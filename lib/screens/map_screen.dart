@@ -64,8 +64,8 @@ class MapScreenState extends State<MapScreen> {
               color: Colors.white,
               child: Column(
                 children: [
-                  Text(locationData.selectedAddresses.featureName),
-                  Text(locationData.selectedAddresses.addressLine),
+                  // Text(locationData.selectedAddresses.featureName),
+                  // Text(locationData.selectedAddresses.addressLine),
                 ],
               ),
             ),
