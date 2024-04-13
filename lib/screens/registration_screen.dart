@@ -3,7 +3,6 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:milcko/models/user_model.dart';
 import 'package:milcko/provider/auth_provider.dart';
-import 'package:milcko/provider/location_provider.dart';
 import 'package:milcko/screens/map_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -135,7 +134,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
   void storeData(){
     final ap = Provider.of<AuthProvider>(context,listen: false);
-    MapScreenState location = MapScreenState();
+    //MapScreenState location = MapScreenState();
     UserModel userModel = UserModel(
       phoneNumber: phoneController.text.trim(), 
       location: "",//"${location.locationData.selectedAddresses.featureName} \n ${location.locationData.selectedAddresses.addressLine}", 

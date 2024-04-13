@@ -3,8 +3,6 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:milcko/widgets/constants.dart';
 import 'package:milcko/Screens/map_screen.dart';
 import 'package:milcko/provider/location_provider.dart';
-import 'package:milcko/widgets/constants.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class OnBoardScreen extends StatefulWidget {
