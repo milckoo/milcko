@@ -138,8 +138,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     MapScreenState location = MapScreenState();
     UserModel userModel = UserModel(
       phoneNumber: phoneController.text.trim(), 
-      location: "",
-      //"${location.locationData.selectedAddresses.featureName} \n ${location.locationData.selectedAddresses.addressLine}", 
+      location: "",//"${location.locationData.selectedAddresses.featureName} \n ${location.locationData.selectedAddresses.addressLine}", 
       uid: ""
     );
     ap.saveUserDataToFirebase(

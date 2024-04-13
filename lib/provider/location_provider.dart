@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -8,7 +9,14 @@ class LocationProvider with ChangeNotifier{
   double? longitude;
   bool premissionAllowed = false;
   bool loading = false;
-  var selectedAddresses;
+  Placemark? selectedAddresses;
+
+  // Method to update location when the pin is moved
+  void updateLocation(LatLng newPosition) {
+    latitude = newPosition.latitude;
+    longitude = newPosition.longitude;
+    notifyListeners();
+  }
 
   // ignore: non_constant_identifier_names
   Future<void> getCurrentPosition() async {
@@ -25,7 +33,14 @@ class LocationProvider with ChangeNotifier{
           latitude = position.latitude;
           longitude = position.longitude;
           premissionAllowed = true;
-          notifyListeners();
+          
+          List<Placemark> placemarks =
+              await placemarkFromCoordinates(position.latitude, position.longitude);
+          if (placemarks.isNotEmpty) {
+            // Update selectedAddress with the first placemark
+            selectedAddresses = placemarks.first;
+            notifyListeners(); // Notify listeners only after setting selectedAddress
+          }
         } else {
           // Handle case when position is null
           print('Failed to get current position');
@@ -43,5 +58,8 @@ class LocationProvider with ChangeNotifier{
     this.latitude = cameraPosition.target.latitude;
     this.longitude = cameraPosition.target.longitude;
     notifyListeners();
+  }
+  Future<void> getMoveCamera() async{
+
   }
 }
