@@ -1,6 +1,7 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:milcko/Screens/splash_screen.dart';
 import 'package:milcko/firebase_options.dart';
 import 'package:milcko/provider/auth_provider.dart';
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: SplashScreen.id,
         routes: {
-          HomeScreen.id: (context) => const  HomeScreen(),
+          HomeScreen.id: (context) =>  HomeScreen(currentLocation: LatLng(0.0, 0.0),),
           GetStartedScreen.id: (context) => const GetStartedScreen(),
           SplashScreen.id: (context) => const SplashScreen(),
           MapScreen.id: (context) => const MapScreen(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:milcko/provider/auth_provider.dart';
 import 'package:milcko/screens/home_screen.dart';
 import 'package:milcko/screens/onboard_screen.dart';
@@ -106,7 +107,7 @@ class _OtpScreenState extends State<OtpScreen> {
             // User Already Exists in our app
             Navigator.pushAndRemoveUntil(
               context, 
-              MaterialPageRoute(builder: (context)=> const HomeScreen()), 
+              MaterialPageRoute(builder: (context)=> HomeScreen(currentLocation: LatLng(0.0, 0.0),)), 
               (route) => false);
           }
           else{

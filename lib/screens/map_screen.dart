@@ -50,7 +50,7 @@ class MapScreenState extends State<MapScreen> with ChangeNotifier{
             mapToolbarEnabled: true,
             onCameraMove: (CameraPosition position){
               locationData.onCameraMove(position);
-              locationData.updateLocation(position.target);
+              //locationData.updateLocation(position.target);
             },
             onMapCreated: onCreated,
             onCameraIdle: (){
@@ -81,6 +81,7 @@ class MapScreenState extends State<MapScreen> with ChangeNotifier{
                           Text(
                             '${locationData.selectedAddresses?.street}', 
                             style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w400,fontSize: 10),),
+                          SizedBox(height: 6,),
                           Text(
                             '${locationData.selectedAddresses?.locality}', 
                             style:const TextStyle(color: Colors.black, fontWeight: FontWeight.w400,fontSize: 10)),
@@ -92,11 +93,7 @@ class MapScreenState extends State<MapScreen> with ChangeNotifier{
                       padding: EdgeInsets.only(right: 10),
                       child: ElevatedButton(
                         onPressed: (){
-                          Navigator.pushReplacement(
-                            context, MaterialPageRoute(
-                              builder: (context)=> const HomeScreen()
-                            )
-                          );
+                          confirmLocation(currentLocation);
                         }, 
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
@@ -111,5 +108,8 @@ class MapScreenState extends State<MapScreen> with ChangeNotifier{
         ],
       ),
     );
+  }
+  void confirmLocation(LatLng currentLocation){
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomeScreen(currentLocation: currentLocation)));
   }
 }

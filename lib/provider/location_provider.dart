@@ -57,6 +57,13 @@ class LocationProvider with ChangeNotifier{
   void onCameraMove(CameraPosition cameraPosition) async {
     this.latitude = cameraPosition.target.latitude;
     this.longitude = cameraPosition.target.longitude;
+
+    // Fetch placemarks based on the new latitude and longitude
+  List<Placemark> placemarks = await placemarkFromCoordinates(latitude!, longitude!);
+  if (placemarks.isNotEmpty) {
+    // Update selectedAddress with the first placemark
+    selectedAddresses = placemarks.first;
+  }
     notifyListeners();
   }
   Future<void> getMoveCamera() async{

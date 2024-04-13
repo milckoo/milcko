@@ -1,11 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:milcko/widgets/constants.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = 'home-screen';
-  const HomeScreen({key});
+  
+  late LatLng currentLocation;
+  //final LatLng confirmedLocation = this.currentLocation;
+  //HomeScreen({super.key,required currentLocation});
+  // ignore: use_super_parameters
+  HomeScreen({Key? key, required this.currentLocation}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -67,8 +73,11 @@ class _HomeScreenState extends State<HomeScreen> {
       _startAutoScroll();
     });
   }
+
   @override
   Widget build(BuildContext context) {
+
+    final LatLng currentLocation = widget.currentLocation;
     return Scaffold(
       body: ListView(
         children: [
@@ -114,10 +123,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   
                 ],
               ),
-              SizedBox(width: 40,),
+              // SizedBox(width: 40,),
               // location Icon Clickable
               Image.asset('lib/images/pin.png',height: 20,width: 20,),
-              const Text('LNCT Canteen')
+              Text('${currentLocation.latitude}\n${currentLocation.longitude}'),
             ],
           ),
           Padding(

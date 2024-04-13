@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:milcko/provider/auth_provider.dart';
 import 'package:milcko/screens/home_screen.dart';
 import 'package:milcko/screens/registration_screen.dart';
@@ -44,7 +45,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                           ap.isSignedIn == true? // when true, fetch shared preference data
                           Navigator.pushReplacement(
                             context, 
-                            MaterialPageRoute(builder: (context)=> const HomeScreen())):
+                            MaterialPageRoute(builder: (context)=> HomeScreen(currentLocation: LatLng(0.0, 0.0),))):
 
                           Navigator.pushReplacement(
                             context, 
