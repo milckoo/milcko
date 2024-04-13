@@ -3,7 +3,6 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:milcko/models/user_model.dart';
 import 'package:milcko/provider/auth_provider.dart';
-import 'package:milcko/screens/map_screen.dart';
 import 'package:provider/provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
