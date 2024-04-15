@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:milcko/widgets/constants.dart';
+import 'package:milcko/widgets/image_slider.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -212,12 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ]
           ),
           const SizedBox(height: 30,),
-          Container(
-            height: 200,
-            width: 500,
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Colors.grey),
-            child: Center(child: const Text('BUY IT NOW\n   IMAGE',style: TextStyle(fontWeight: FontWeight.bold))),
-          ),
+          ImageSlider(),
           const SizedBox(height: 30,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
