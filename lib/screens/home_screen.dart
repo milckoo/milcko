@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:milcko/widgets/constants.dart';
 import 'package:milcko/widgets/image_slider.dart';
+import 'package:milcko/widgets/promo_cards.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -160,56 +161,61 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 10,),
           Row(
             children: [
-              const SizedBox(width: 15,),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    height: 60,width: 60,
-                    decoration: BoxDecoration(color: Color.fromARGB(255, 175, 223, 246),borderRadius: BorderRadius.circular(20)),),
-                  Image.asset('lib/images/first_category.png',width: 50,height: 50,),
-                ],
-              ),
-              const SizedBox(width: 15,),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    height: 60,width: 60,
-                    decoration: BoxDecoration(color: Color.fromARGB(255, 198, 229, 244),borderRadius: BorderRadius.circular(20)),),
-                  Image.asset('lib/images/second_category.png',width: 50,height: 50,),
-                ],
-              ),
-              const SizedBox(width: 15,),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    height: 60,width: 60,
-                    decoration: BoxDecoration(color: Color.fromARGB(255, 249, 193, 211),borderRadius: BorderRadius.circular(20)),),
-                  Image.asset('lib/images/third_category.png',width: 50,height: 50,),
-                ],
-              ),
-              const SizedBox(width: 15,),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    height: 60,width: 60,
-                    decoration: BoxDecoration(color: Color.fromARGB(255, 158, 188, 202),borderRadius: BorderRadius.circular(20)),),
-                  Image.asset('lib/images/fourth_category.png',width: 50,height: 50,),
-                ],
-              ),
-              const SizedBox(width: 15,),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    height: 60,width: 60,
-                    decoration: BoxDecoration(color: const Color.fromARGB(255, 215, 154, 174),borderRadius: BorderRadius.circular(20)),),
-                  Image.asset('lib/images/fifth_category.png',width: 50,height: 50,),
-                ],
-              ),
+              SizedBox(width: 15,),
+              // Stack(
+              //   alignment: Alignment.center,
+              //   children: [
+              //     Container(
+              //       height: 60,width: 60,
+              //       decoration: BoxDecoration(color: Color.fromARGB(255, 175, 223, 246),borderRadius: BorderRadius.circular(20)),),
+              //     Image.asset('lib/images/first_category.png',width: 50,height: 50,),
+              //   ],
+              // ),
+              PromoCard(),
+              SizedBox(width: 15,),
+              // Stack(
+              //   alignment: Alignment.center,
+              //   children: [
+              //     Container(
+              //       height: 60,width: 60,
+              //       decoration: BoxDecoration(color: Color.fromARGB(255, 198, 229, 244),borderRadius: BorderRadius.circular(20)),),
+              //     Image.asset('lib/images/second_category.png',width: 50,height: 50,),
+              //   ],
+              // ),
+              PromoCard(),
+              SizedBox(width: 15,),
+              // Stack(
+              //   alignment: Alignment.center,
+              //   children: [
+              //     Container(
+              //       height: 60,width: 60,
+              //       decoration: BoxDecoration(color: Color.fromARGB(255, 249, 193, 211),borderRadius: BorderRadius.circular(20)),),
+              //     Image.asset('lib/images/third_category.png',width: 50,height: 50,),
+              //   ],
+              // ),
+              PromoCard(),
+              SizedBox(width: 15,),
+              // Stack(
+              //   alignment: Alignment.center,
+              //   children: [
+              //     Container(
+              //       height: 60,width: 60,
+              //       decoration: BoxDecoration(color: Color.fromARGB(255, 158, 188, 202),borderRadius: BorderRadius.circular(20)),),
+              //     Image.asset('lib/images/fourth_category.png',width: 50,height: 50,),
+              //   ],
+              // ),
+              PromoCard(),
+              SizedBox(width: 15,),
+              // Stack(
+              //   alignment: Alignment.center,
+              //   children: [
+              //     Container(
+              //       height: 60,width: 60,
+              //       decoration: BoxDecoration(color: const Color.fromARGB(255, 215, 154, 174),borderRadius: BorderRadius.circular(20)),),
+              //     Image.asset('lib/images/fifth_category.png',width: 50,height: 50,),
+              //   ],
+              // ),
+              PromoCard(),
             ]
           ),
           const SizedBox(height: 30,),
