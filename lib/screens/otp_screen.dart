@@ -19,7 +19,7 @@ class _OtpScreenState extends State<OtpScreen> {
   String? otpcode;
   @override
   Widget build(BuildContext context) {
-    final isLoading = Provider.of<AuthProvider>(context,listen: true).isLoading;
+    final isLoading = !(Provider.of<AuthProvider>(context,listen: true).isLoading);
     return Scaffold(
       body: isLoading == true? 
       Center(
@@ -96,6 +96,8 @@ class _OtpScreenState extends State<OtpScreen> {
   void verifyOtp(BuildContext context, String userOtp){
     final ap = Provider.of<AuthProvider>(context,listen: false);
     print('CALLED VERIFY OTP- OTP SCREEN');
+    showSnackbarlong(context, 'Sending OTP...');
+
     ap.verifyOtp(
       context: context, 
       verificationId: widget.verificationId, 
@@ -107,7 +109,7 @@ class _OtpScreenState extends State<OtpScreen> {
             // User Already Exists in our app
             Navigator.pushAndRemoveUntil(
               context, 
-              MaterialPageRoute(builder: (context)=> HomeScreen(currentLocation: LatLng(0.0, 0.0),)), 
+              MaterialPageRoute(builder: (context)=> HomeScreen(currentLocation: const LatLng(0.0, 0.0),)), 
               (route) => false);
           }
           else{

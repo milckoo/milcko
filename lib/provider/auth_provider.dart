@@ -88,6 +88,9 @@ class AuthProvider extends ChangeNotifier{
       showSnackbar(context, e.message.toString());
       _isLoading = false;
       notifyListeners();
+    }finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -134,6 +137,9 @@ class AuthProvider extends ChangeNotifier{
     } on FirebaseAuthException catch(e){
       showSnackbar(context, e.message.toString());
       _isLoading = false;
+      notifyListeners();
+    } finally{
+      _isLoading = true;
       notifyListeners();
     }
   }
