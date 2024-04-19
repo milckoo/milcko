@@ -4,6 +4,7 @@ import 'package:milcko/widgets/constants.dart';
 import 'package:milcko/Screens/map_screen.dart';
 import 'package:milcko/provider/location_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class OnBoardScreen extends StatefulWidget {
   const OnBoardScreen({key});
@@ -91,14 +92,20 @@ class _OnBoardScreenState extends State<OnBoardScreen> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.orangeAccent,),
             onPressed: () async {
-              await locationData.getCurrentPosition();
-              print(locationData.premissionAllowed);
-              if(locationData.premissionAllowed == true) {
-                // ignore: use_build_context_synchronously
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => MapScreen())));
-              }
-              else{
-                print('PERMISSION NOT ALLOWED');
+              var locationPermissionStatus = await Permission.location.request();
+              if (locationPermissionStatus.isGranted) {
+                await locationData.getCurrentPosition();
+                if (locationData.premissionAllowed == true) {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => MapScreen())));
+                } else {
+                  print('Location permission granted but fetching location failed.');
+                }
+              } else if (locationPermissionStatus.isDenied) {
+                print('Location permission denied by user.');
+                // You might want to show a user-friendly message here
+              } else if (locationPermissionStatus.isPermanentlyDenied) {
+                print('Location permission permanently denied by user.');
+                // You might want to show a user-friendly message here with instructions to enable permission in settings
               }
             },
             child: const Text('Set Delivery Location', style: TextStyle(color: Colors.white)),

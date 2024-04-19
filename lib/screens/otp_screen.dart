@@ -96,7 +96,7 @@ class _OtpScreenState extends State<OtpScreen> {
   void verifyOtp(BuildContext context, String userOtp){
     final ap = Provider.of<AuthProvider>(context,listen: false);
     print('CALLED VERIFY OTP- OTP SCREEN');
-    showSnackbarlong(context, 'Sending OTP...');
+    showSnackbarlong(context, 'Verifying OTP...');
 
     ap.verifyOtp(
       context: context, 
