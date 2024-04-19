@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late String address;
+  late String address = '';
 
   @override
   void initState() {
@@ -26,15 +26,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> getAddressFromCoordinates(LatLng coordinates) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
         coordinates.latitude,
-        coordinates.longitude
-    );
-    if (placemarks.isNotEmpty) {
-      Placemark placemark = placemarks[0];
-      setState(() {
-        address = "${placemark.street}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}";
-      });
+        coordinates.longitude,
+      );
+      if (placemarks.isNotEmpty) {
+        Placemark placemark = placemarks[0];
+        setState(() {
+          address =
+          "${placemark.street}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}";
+        });
+      }
+    } catch (e) {
+      print('Error getting address: $e');
     }
   }
 
@@ -45,52 +50,67 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: ListView(
         children: [
-      Row(
-      children: [
-      const SizedBox(width: 10,),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text('Hello Humans!',
-            style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.w500,),),
-          ShaderMask(shaderCallback: (bounds) =>
-              LinearGradient(
-                  colors: [
-                    Color(0xFFFFA400),
-                    Colors.black.withOpacity(0.7),
-                  ]).createShader(
-                bounds,
+          Row(
+            children: [
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text(
+                    'Hello Humans!',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  ShaderMask(
+                    shaderCallback: (bounds) => LinearGradient(
+                      colors: [
+                        Color(0xFFFFA400),
+                        Colors.black.withOpacity(0.7),
+                      ],
+                    ).createShader(
+                      bounds,
+                    ),
+                    child: const Text(
+                      'Get The Right One For The',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  ShaderMask(
+                    shaderCallback: (bounds) => LinearGradient(
+                      colors: [
+                        Color(0xFFFFBF4D),
+                        Colors.black.withOpacity(0.4),
+                      ],
+                    ).createShader(
+                      bounds,
+                    ),
+                    child: const Text(
+                      'Better Health',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            child: const Text('Get The Right One For The',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold
+              Image.asset(
+                'lib/images/pin.png',
+                height: 20,
+                width: 20,
               ),
-            ),
+              Text('${address ?? 'Loading...'}'),
+            ],
           ),
-          ShaderMask(shaderCallback: (bounds) =>
-              LinearGradient(colors: [
-                Color(0xFFFFBF4D),
-                Colors.black.withOpacity(0.4),
-              ]).createShader(
-                bounds,
-              ),
-            child: const Text('Better Health',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold
-              ),
-            ),
-          ),
-        ],
-      ),
-      Image.asset('lib/images/pin.png',height: 20,width: 20,),
-      Text('${address ?? 'Loading...'}'),
-      ],
-    ),
     Padding(
     padding: const EdgeInsets.all(10.0),
     child: Row(

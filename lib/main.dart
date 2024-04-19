@@ -36,24 +36,19 @@ void main() async{
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({key});
+  const MyApp({Key? key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return 
-    MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_)=> AuthProvider())],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: SplashScreen.id,
-        routes: {
-          HomeScreen.id: (context) =>  HomeScreen(currentLocation: LatLng(0.0, 0.0),),
-          GetStartedScreen.id: (context) => const GetStartedScreen(),
-          SplashScreen.id: (context) => const SplashScreen(),
-          MapScreen.id: (context) => const MapScreen(),
-        }
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: SplashScreen.id,
+      routes: {
+        HomeScreen.id: (context) => HomeScreen(currentLocation: LatLng(0.0, 0.0)),
+        GetStartedScreen.id: (context) => const GetStartedScreen(),
+        SplashScreen.id: (context) => const SplashScreen(),
+        MapScreen.id: (context) => const MapScreen(),
+      },
     );
   }
 }
