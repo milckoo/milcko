@@ -128,21 +128,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    _showLoadingDialog(context); // Show loading dialog
-                    storeData();
-                    sendPhoneNumber(context);
-                    print('called sendPhone Number');
+                    if(validPhoneNumber(phoneController)){
+                      _showLoadingDialog(context); // Show loading dialog
+                      storeData();
+                      sendPhoneNumber(context);
+                      print('called sendPhone Number');
+                    }
                   },
                   style: ButtonStyle(
-                    foregroundColor:
-                    MaterialStateProperty.all<Color>(Colors.white),
-                    backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                    ),
+                    foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                    backgroundColor: validPhoneNumber(phoneController) ? MaterialStateProperty.all<Color>(Colors.orangeAccent):MaterialStateProperty.all<Color>(Colors.grey),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                    )),
                   ),
                   child: const Text('Get OTP',
                       style:
@@ -177,6 +175,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void sendPhoneNumber(BuildContext context) {
     final ap = Provider.of<AuthProvider>(context, listen: false);
     String phoneNumber = phoneController.text.trim();
-    ap.signInWithPhone(context, "+${selectedCountry.phoneCode}$phoneNumber");
+    ap.signInWithPhone(context,"+91$phoneNumber");
+  }
+  bool validPhoneNumber(TextEditingController phoneController){
+    if(phoneController.text.trim().length != 10){
+      return false;
+    }
+    return true;
   }
 }

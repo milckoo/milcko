@@ -75,29 +75,27 @@ class _OtpScreenState extends State<OtpScreen> {
           RichText(
             text: const TextSpan(
               children: [
-                TextSpan(text: "Didn't receive OTP?   ", style: TextStyle(color: Colors.black)),
-                TextSpan(text: "Resend OTP", style: TextStyle(color: Colors.red)),
-              ],
+                TextSpan(text: "Did'nt recieve OTP?   ",style: TextStyle(color: Colors.black)),
+                TextSpan(text: "Resend OTP",style: TextStyle(color: Colors.red)),
+              ])
             ),
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          SizedBox(
-            width: 200,
-            child: ElevatedButton(
-              onPressed: () {
-                if (otpcode != null) {
-                  verifyOtp(context, otpcode!);
-                } else {
-                  showSnackbar(context, 'Enter 6-Digit Code');
-                }
-              },
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.orangeAccent),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
+            const SizedBox(
+              height: 40,
+            ),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                  onPressed: () {
+                    if(validOtp(otpcode)){
+                      verifyOtp(context,otpcode!);
+                    }else{
+                      showSnackbar(context, 'Entre 6-Digit Code');
+                    }
+                  }, 
+                  style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor: validOtp(otpcode) ? MaterialStateProperty.all<Color>(Colors.orangeAccent):MaterialStateProperty.all<Color>(Colors.grey),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25.0),
                   ),
                 ),
@@ -150,5 +148,11 @@ class _OtpScreenState extends State<OtpScreen> {
         }
       },
     );
+  }
+  bool validOtp(String? otpcode){
+    if(otpcode != null){
+      return true;
+    }
+    return false;
   }
 }

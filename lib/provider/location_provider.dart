@@ -25,7 +25,7 @@ class LocationProvider with ChangeNotifier{
     if (permissionStatus.isGranted) {
       try {
         // Get current position if permission is granted
-        Position position = await Geolocator.getCurrentPosition(
+        Position position = await Geolocator.getCurrentPosition (
           desiredAccuracy: LocationAccuracy.high,
         );
         if (position != null) {
