@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:milcko/provider/auth_provider.dart';
 import 'package:milcko/screens/home_screen.dart';
+import 'package:milcko/screens/onboard_screen.dart';
 import 'package:milcko/screens/registration_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -49,7 +50,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
 
                           Navigator.pushReplacement(
                             context, 
-                            MaterialPageRoute(builder: (context)=> const RegistrationScreen()));
+                            MaterialPageRoute(builder: (context)=> const OnBoardScreen()));
                         }, 
                         style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
@@ -59,7 +60,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                           ),),
                         ),
                         child: const Text('Get Started', style: TextStyle(fontSize: 16)),),
-                            ),
+                        ),
           )
         ],),
     );

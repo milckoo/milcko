@@ -2,9 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:milcko/provider/auth_provider.dart';
 import 'package:milcko/provider/location_provider.dart';
 import 'package:milcko/screens/home_screen.dart';
+import 'package:milcko/screens/registration_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'getstarted_screen.dart';
 
 class MapScreen extends StatefulWidget {
   static String id = 'map-screen';
@@ -17,17 +21,22 @@ class MapScreen extends StatefulWidget {
 class MapScreenState extends State<MapScreen> with ChangeNotifier{
   late LatLng currentLocation;
   late GoogleMapController _mapController;
-  //late final locationData = Provider.of<LocationProvider>(context);
+  late var locationData = Provider.of<LocationProvider>(context);
   @override
   Widget build(BuildContext context) {
-    final locationData = Provider.of<LocationProvider>(context,listen: true);
+    locationData = Provider.of<LocationProvider>(context,listen: true);
 
     setState(() {
-      currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
-      print(locationData.selectedAddresses?.street);
-      print(locationData.selectedAddresses?.locality);
-      notifyListeners();
-    });
+  currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
+  if (locationData.selectedAddresses != null) {
+    print(locationData.selectedAddresses!.street);
+    print(locationData.selectedAddresses!.locality);
+  } else {
+    print('Selected address is null');
+  }
+  notifyListeners();
+});
+
     void onCreated(GoogleMapController controller){
       setState(() {
       _mapController = controller;
@@ -67,11 +76,11 @@ class MapScreenState extends State<MapScreen> with ChangeNotifier{
           Positioned(
             bottom: 0.0,
             child: Container(
-              height: 50,
+              height: 200,
               width: MediaQuery.of(context).size.width,
               color: Colors.white,
               child: Center(
-                child: Row(
+                child: Column(
                   children: [
                     SizedBox(width: 10,),
                     Expanded(
@@ -79,12 +88,13 @@ class MapScreenState extends State<MapScreen> with ChangeNotifier{
                         children: [
                           SizedBox(height: 6,),
                           Text(
-                            '${locationData.selectedAddresses?.street}', 
-                            style:const TextStyle(color: Colors.black,fontWeight: FontWeight.w400,fontSize: 10),),
-                          SizedBox(height: 6,),
+                            locationData.selectedAddresses?.street ?? 'Loading...',
+                            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize:25),
+                          ),
                           Text(
-                            '${locationData.selectedAddresses?.locality}', 
-                            style:const TextStyle(color: Colors.black, fontWeight: FontWeight.w400,fontSize: 10)),
+                            locationData.selectedAddresses?.locality ?? 'Loading...',
+                            style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 25),
+                          ),
                         ],
                       ),
                     ),
@@ -93,13 +103,16 @@ class MapScreenState extends State<MapScreen> with ChangeNotifier{
                       padding: EdgeInsets.only(right: 10),
                       child: ElevatedButton(
                         onPressed: (){
-                          confirmLocation(currentLocation);
+                          navigateToNextScreen();
                         }, 
                         style: ButtonStyle(
+                          minimumSize: MaterialStateProperty.all<Size>(Size(200, 50)), 
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
                         ),
-                        child: const Text('Confirm Location',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w300),)),
-                    )
+                        child: const Text('Confirm Location',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w300),)
+                      ),
+                    ),
+                    SizedBox(height: 15,)
                   ],
                 ),
               ),
@@ -109,7 +122,15 @@ class MapScreenState extends State<MapScreen> with ChangeNotifier{
       ),
     );
   }
-  void confirmLocation(LatLng currentLocation){
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> HomeScreen(currentLocation: currentLocation)));
+  void navigateToNextScreen() async {
+    final isUserLoggedIn = await Provider.of<AuthProvider>(context, listen: false).checkLoggedIn();
+    if (isUserLoggedIn) {
+      Navigator.pushReplacementNamed(context, HomeScreen.id);
+    } else {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> RegistrationScreen()));
+    }
   }
+  // void confirmLocation(LatLng currentLocation){
+  //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const RegistrationScreen()));
+  // }
 }

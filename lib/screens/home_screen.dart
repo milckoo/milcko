@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:milcko/provider/auth_provider.dart';
+import 'package:milcko/screens/map_screen.dart';
+import 'package:milcko/screens/onboard_screen.dart';
 import 'package:milcko/widgets/image_slider.dart';
 import 'package:milcko/widgets/promo_cards.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = 'home-screen';
@@ -16,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late String address = '';
+  late String address = 'Tap to set Location';
 
   @override
   void initState() {
@@ -31,12 +36,11 @@ class _HomeScreenState extends State<HomeScreen> {
         coordinates.longitude,
       );
       if (placemarks.isNotEmpty) {
-        Placemark placemark = placemarks[0];
-        setState(() {
-          address =
-          "${placemark.street}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}";
-        });
-      }
+    Placemark placemark = placemarks[0];
+    setState(() {
+      address = "${placemark.street}, ${placemark.locality}, ${placemark.postalCode}, ${placemark.country}";
+    });
+  }
     } catch (e) {
       print('Error getting address: $e');
     }
@@ -102,12 +106,40 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              Image.asset(
-                'lib/images/pin.png',
-                height: 20,
-                width: 20,
+              SizedBox(
+  height: 50,
+  child: Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Image.asset('lib/images/pin.png', height: 20, width: 20),
+      Flexible(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: Container( // Wrap the Text in a Container
+            width: 200.0, // Set a desired width for the text
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(
+                  context, 
+                  MaterialPageRoute(builder: (context)=> const OnBoardScreen())
+                );
+              },
+              child: Text(
+                '${currentLocation ?? 'Loading...'}',
+                //'this is address line',
+                style: TextStyle(fontSize: 10,color: Colors.black),
+                overflow: TextOverflow.visible,
+                softWrap: true,
               ),
-              Text('${address ?? 'Loading...'}'),
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+),
+
             ],
           ),
     Padding(
@@ -273,7 +305,12 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: const Color.fromARGB(255, 248, 239, 157)),
               child: Center(child: const Text('One More Image\n Subscription Plan',style: TextStyle(fontWeight: FontWeight.bold),)),
             ),
-          )
+          ),
+          ElevatedButton(
+            onPressed: (){
+              Provider.of<AuthProvider>(context, listen: false).signOut(context);
+            }, 
+            child: const Text('Sign Out'))
         ],
       ),
     );

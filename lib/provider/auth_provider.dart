@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:milcko/models/user_model.dart';
+import 'package:milcko/screens/getstarted_screen.dart';
 import 'package:milcko/screens/otp_screen.dart';
 import 'package:milcko/widgets/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,6 +37,19 @@ class AuthProvider extends ChangeNotifier {
     final SharedPreferences s = await SharedPreferences.getInstance();
     _isSignedIn = s.getBool('is_signed_in') ?? false;
     notifyListeners();
+  }
+
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await _firebaseAuth.signOut();
+      _uid = null;
+      _isSignedIn = false;
+      final SharedPreferences s = await SharedPreferences.getInstance();
+      await s.setBool('is_signed_in', false);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> GetStartedScreen())); // Replace '/login' with your login screen route
+    } catch (e) {
+      showSnackbar(context, 'Failed to sign out. ${e.toString()}');
+    }
   }
 
   void signInWithPhone(BuildContext context, String phoneNumber) async {

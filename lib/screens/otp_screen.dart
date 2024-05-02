@@ -134,7 +134,7 @@ class _OtpScreenState extends State<OtpScreen> {
               print('New user');
               Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const OnBoardScreen()),
+                MaterialPageRoute(builder: (context) =>  HomeScreen(currentLocation: const LatLng(0.0, 0.0))),
                     (route) => false,
               );
             }

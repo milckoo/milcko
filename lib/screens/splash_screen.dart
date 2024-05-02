@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:milcko/screens/getstarted_screen.dart';
+import 'package:milcko/screens/map_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/auth_provider.dart';

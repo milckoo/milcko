@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:milcko/models/user_model.dart';
 import 'package:milcko/provider/auth_provider.dart';
+import 'package:milcko/screens/map_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:country_picker/country_picker.dart';
 import 'dialogs.dart'; // Import your Dialogs class
 import 'package:milcko/screens/otp_screen.dart'; // Import the OTP screen
 
 class RegistrationScreen extends StatefulWidget {
+  static String id = 'registrationscreen-screen';
   const RegistrationScreen({Key? key}) : super(key: key);
 
   @override
@@ -127,11 +129,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if(validPhoneNumber(phoneController)){
                       _showLoadingDialog(context); // Show loading dialog
-                      storeData();
-                      sendPhoneNumber(context);
+                      await storeData();
+                      await sendPhoneNumber(context);
                       print('called sendPhone Number');
                     }
                   },
@@ -158,11 +160,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     Dialogs.showLoadingDialog(context, 'Sending OTP...');
   }
 
-  void storeData() {
+  Future<void> storeData() async{
     final ap = Provider.of<AuthProvider>(context, listen: false);
+    MapScreenState location = new MapScreenState();
     UserModel userModel = UserModel(
       phoneNumber: phoneController.text.trim(),
-      location: "",
+      location: location.locationData.selectedAddresses?.street ?? 'Loading...',
       uid: "",
     );
     ap.saveUserDataToFirebase(
@@ -172,7 +175,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
   }
 
-  void sendPhoneNumber(BuildContext context) {
+  Future<void> sendPhoneNumber(BuildContext context) async {
     final ap = Provider.of<AuthProvider>(context, listen: false);
     String phoneNumber = phoneController.text.trim();
     ap.signInWithPhone(context,"+91$phoneNumber");
